@@ -1,0 +1,9 @@
+# Start Docker Desktop (Ubuntu 24.04)
+sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+systemctl --user restart docker-desktop
+
+# Building the docker image
+docker build -t pizza-auth-service:dev -f ./docker/dev/Dockerfile .
+
+# Running the express app in a docker container
+docker run --rm -it -v $(pwd):/usr/src/app -v /usr/src/app/node_modules --env-file $(pwd)/.env.dev -p 4000:4000 -e NODE_ENV=dev pizza-auth-service:dev
